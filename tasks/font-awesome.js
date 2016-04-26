@@ -12,14 +12,24 @@
 
 var gulp = require( 'gulp' );
 var path = require( 'path' );
+var fs = require( 'fs' );
 
-var faDir = './../node_modules/font-awesome';
+var possibleDirectories = [
+    './node_modules/font-awesome',
+    __dirname + '/../node_modules/font-awesome'
+];
 
-try {
-    faDir = path.resolve( faDir );
-} catch ( e ) {
-    console.log( 'Cannot find font-awesome module. Make sure the project you are running does not already include font-awesome' );
-    throw e;
+var faDir;
+var stats;
+for ( var i = 0; i < possibleDirectories.length; i++ ) {
+    faDir = possibleDirectories[ i ];
+    try {
+        faDir = path.resolve( faDir );
+        stats = fs.lstatSync( faDir );
+        if ( stats.isDirectory() ) {
+            break;
+        }
+    } catch ( e ) {}
 }
 
 module.exports = function outputTaskFunc( name, config ) {
