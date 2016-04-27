@@ -33,7 +33,7 @@ for ( var i = 0; i < possibleDirectories.length; i++ ) {
     } catch ( e ) {}
 }
 
-module.exports = function outputTaskFunc( name, config ) {
+module.exports = function fontawesomeTaskFunc( name, config ) {
     gulp.task( name, config.dependency, function () {
         var stream = require( 'merge-stream' )();
         if ( config.fontsDest ) {
