@@ -11,6 +11,7 @@
 'use strict';
 
 var gulp = require( 'gulp' );
+
 var path = require( 'path' );
 var fs = require( 'fs' );
 
@@ -34,21 +35,23 @@ for ( var i = 0; i < possibleDirectories.length; i++ ) {
 
 module.exports = function outputTaskFunc( name, config ) {
     gulp.task( name, config.dependency, function () {
+        var stream = require( 'merge-stream' )();
         if ( config.fontsDest ) {
-            gulp.src( faDir + '/fonts/*' )
-                .pipe( gulp.dest( config.fontsDest ) );
+            stream.add( gulp.src( faDir + '/fonts/*' )
+                .pipe( gulp.dest( config.fontsDest ) ) );
         }
         if ( config.scssDest ) {
-            gulp.src( faDir + '/scss/*' )
-                .pipe( gulp.dest( config.scssDest ) );
+            stream.add( gulp.src( faDir + '/scss/*' )
+                .pipe( gulp.dest( config.scssDest ) ) );
         }
         if ( config.lessDest ) {
-            gulp.src( faDir + '/less/*' )
-                .pipe( gulp.dest( config.lessDest ) );
+            stream.add( gulp.src( faDir + '/less/*' )
+                .pipe( gulp.dest( config.lessDest ) ) );
         }
         if ( config.cssDest ) {
-            gulp.src( faDir + '/css/*' )
-                .pipe( gulp.dest( config.cssDest ) );
+            stream.add( gulp.src( faDir + '/css/*' )
+                .pipe( gulp.dest( config.cssDest ) ) );
         }
+        return ( stream.isEmpty() ) ? null : stream;
     } );
 };
